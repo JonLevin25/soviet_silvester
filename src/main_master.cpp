@@ -39,7 +39,10 @@ int32_t err_errs = 0;
 
 // TODO - light triggers
 const static double triggers[] = {
+  1.0,
   2.0,
+  3.0,
+  4.0,
   5.0,
 };
 
@@ -99,6 +102,7 @@ void play()
   }
 
   Serial.println("===== END SOUND TEST =====");
+  wire_sendMsg(END_VALUE, I2C_ADDR_SLAVE);
   // Serial.printf("Errors: ArrayAccess: %u, DacWrite: %u, Errors: %u\n", err_sampleget, err_dacWrite, err_errs);
 }
 
