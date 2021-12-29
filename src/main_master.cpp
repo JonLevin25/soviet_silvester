@@ -16,6 +16,8 @@
 #define PIN_LED_INDICATOR 32
 #define PIN_REED 4
 
+#define PLAY_START_DELAY_MILLIS 1300
+
 #define REED_DEBOUNCE_MILLIS 200
 
 // #define SAMPLE_FREQ 16000
@@ -68,6 +70,7 @@ void setup()
     Pf("%f -> %lu\n", triggers[i], triggers_micros[i]);
   }
 
+  // TODO: REMOVE! (Test)
   delay(1500);
   play();
 }
@@ -110,14 +113,10 @@ void loop()
 {
   reedDebounce.update();
   
-  //
   digitalWrite(PIN_LED_INDICATOR, !reedDebounce.read());
-  // return;
-  //
 
   if (reedDebounce.fell()) {
-    digitalWrite(PIN_LED_INDICATOR, HIGH);
+    delay(PLAY_START_DELAY_MILLIS);
     play();
-    digitalWrite(PIN_LED_INDICATOR, LOW);
   }
 }
