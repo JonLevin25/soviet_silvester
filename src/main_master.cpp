@@ -4,8 +4,9 @@
 #include "common.h"
 #include "utils/i2c_helper.h"
 
-#include "sound/putin_test_16khz_8bit_20sec.h"
+// #include "sound/putin_test_16khz_8bit_20sec.h"
 // #include "sound/putin_test_32khz_8bit_20sec.h"
+#include "sound/anthem_22050hz_8bit.h"
 #include "Bounce2.h"
 #include "utils/utils.h"
 
@@ -17,17 +18,16 @@
 
 #define REED_DEBOUNCE_MILLIS 200
 
-#define SAMPLE_FREQ 16000
-#define WAV_DATA putin_test_16khz_8bit_20sec_wav
-#define WAV_DATA_LEN putin_test_16khz_8bit_20sec_wav_len
+// #define SAMPLE_FREQ 16000
+// #define WAV_DATA putin_test_16khz_8bit_20sec_wav
+// #define WAV_DATA_LEN putin_test_16khz_8bit_20sec_wav_len
+
+#define SAMPLE_FREQ 22050
+#define WAV_DATA anthem_22050hz_8bit_wav
+#define WAV_DATA_LEN anthem_22050hz_8bit_wav_len
 
 Bounce reedDebounce = Bounce(PIN_REED, REED_DEBOUNCE_MILLIS);
 unsigned int i = 0;
-
-
-// #define SAMPLE_FREQ 32000
-// #define WAV_DATA putin_test_32khz_8bit_20sec_wav
-// #define WAV_DATA_LEN putin_test_32khz_8bit_20sec_wav_len
 
 const double SAMPLE_LENGTH_SECS = 1.0 / SAMPLE_FREQ;
 const uint32_t SAMPLE_DELAY_MICROS = (uint32_t) round(SAMPLE_LENGTH_SECS * 1E6);
