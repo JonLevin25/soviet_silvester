@@ -6,7 +6,7 @@
 #define I2C_ADDR_MASTER 0x66
 #define I2C_ADDR_SLAVE 0x55
 
-#define NUM_LEDS 40
+#define NUM_LEDS 60
 
 // #define P(x) Serial.print(x)
 #define P(...) Serial.print(__VA_ARGS__)

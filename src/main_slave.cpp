@@ -38,5 +38,5 @@ void onData(uint16_t value)
 
 void loop()
 {
-    delay(100);
+    loop_lighting();
 }
