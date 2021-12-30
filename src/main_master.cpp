@@ -28,6 +28,7 @@
 #define WAV_DATA anthem_22050hz_8bit_wav
 #define WAV_DATA_LEN anthem_22050hz_8bit_wav_len
 
+
 Bounce reedDebounce = Bounce(PIN_REED, REED_DEBOUNCE_MILLIS);
 unsigned int i = 0;
 
@@ -41,11 +42,15 @@ int32_t err_errs = 0;
 
 // TODO - light triggers
 const static double triggers[] = {
-  1.0,
-  2.0,
-  3.0,
-  4.0,
-  5.0,
+  0
+  0.849,
+  3.360,
+  4.231,
+  5.863,
+  7.405,
+  8.131,
+  9.0,
+  10.634,
 };
 
 const static size_t len_triggers = sizeof(triggers) / sizeof(*triggers);

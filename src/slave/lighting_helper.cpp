@@ -25,9 +25,11 @@ void handle_action(LEDS_T leds, Action a)
         case FN_SET_BRIGHTNESS:
             Pln(a.value);
             FastLED.setBrightness(a.value);
+            break;
         default:
             P("Unknown function! ("); P(a.fn);
             Pln();
+            return;
     }
 
     FastLED.show();
