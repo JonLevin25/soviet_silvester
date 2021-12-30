@@ -7,38 +7,16 @@
 
 CRGBArray<NUM_LEDS> leds;
 
-typedef struct {
-    LightFn fn;
-    CHSV value;
-} Action;
-
 Action actions[] = {
-    {Fill, Hue(HUE_RED)},
-    {Fill, Hue(HUE_GREEN)},
-    {Fill, Hue(HUE_RED)},
-    {Fill, Hue(HUE_GREEN)},
-    {Fill, Hue(HUE_RED)},
-    {Fill, Hue(HUE_GREEN)},
+    {LIGHT_FILL, Hue(HUE_RED)},
+    {LIGHT_FILL, Hue(HUE_GREEN)},
+    {LIGHT_FILL, Hue(HUE_RED)},
+    {LIGHT_FILL, Hue(HUE_GREEN)},
+    {LIGHT_FILL, Hue(HUE_RED)},
+    {LIGHT_FILL, Hue(HUE_GREEN)},
 };
 static const size_t len_actions = sizeof(actions) / sizeof(Action);
 
-
-
-void handle_action(uint16_t idx)
-{
-    Action a = actions[idx];
-    switch (a.fn)
-    {
-        case Fill:
-            leds.fill_solid(a.value);
-            break;
-        default:
-            P("Unknown function! ("); P(a.fn);
-            Pln();
-    }
-
-    FastLED.show();
-}
 
 void on_light_trigger(uint16_t idx)
 {
@@ -51,13 +29,14 @@ void on_light_trigger(uint16_t idx)
         return;
     }
 
-    handle_action(idx);
+    handle_action(actions[idx]);
 }
 
 void setup_lighting()
 {
     FastLED.addLeds<WS2812, PIN_PIXELS, GRB>(leds, NUM_LEDS);
     fillWhite(255U);
+
     set_leds(leds);
 }
 
@@ -68,5 +47,7 @@ void reset_lighting()
 
 void loop_lighting()
 {
+    EVERY_N_MILLISECONDS(15) {
 
+    }
 }
