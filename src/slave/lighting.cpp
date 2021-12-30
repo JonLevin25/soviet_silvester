@@ -5,6 +5,7 @@
 #include "colors.h"
 
 #define PIN_PIXELS 12
+// #define LIGHT_TEST
 
 CRGBArray<NUM_LEDS> leds;
 
@@ -18,6 +19,7 @@ Action actions[] = {
     {FN_SET_HSV, TARGET_ALL, {Hue(HUE_ORANGE)}},
     {FN_SET_HSV, TARGET_EVEN, {Hue(HUE_RED)}},
     {FN_SET_HSV, TARGET_ODD, {Hue(HUE_YELLOW)}},
+    {FN_SET_HSV, TARGET_ALL, {Hue(HUE_RED)}},
 };
 static const size_t len_actions = sizeof(actions) / sizeof(Action);
 
@@ -38,6 +40,13 @@ void test_loop()
 
 void on_light_trigger(uint16_t idx)
 {
+    if (idx == END_VALUE)
+    {
+        Pln("Trigger: END!");
+        reset_lighting();
+        return;
+    }
+
     P("Trigger: "); P(idx);
     Pln();
     
@@ -53,16 +62,22 @@ void on_light_trigger(uint16_t idx)
 void setup_lighting()
 {
     FastLED.addLeds<WS2812, PIN_PIXELS, GRB>(leds, NUM_LEDS);
+
+    #ifdef LIGHT_TEST
     test_setup();
+    #endif
 }
 
 void loop_lighting()
 {
+    #ifdef LIGHT_TEST
     test_loop();
+    #endif
 }
 
 void reset_lighting()
 {    
     fill_palette(leds, NUM_LEDS, 0, 2, init_bg_palette(), 127, LINEARBLEND);
-    fill_solid(leds, NUM_LEDS, CRGB::Green);
+    light_fill<CRGB>(leds, TARGET_EVEN, CRGB::Green);
+    FastLED.show();
 }

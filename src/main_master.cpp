@@ -42,15 +42,16 @@ int32_t err_errs = 0;
 
 // TODO - light triggers
 const static double triggers[] = {
-  0
-  0.849,
-  3.360,
-  4.231,
-  5.863,
+  0,
+  1.333,
+  3.711,
+  4.114,
+  5.820,
   7.405,
-  8.131,
-  9.0,
-  10.634,
+  8.083,
+  8.685,
+  8.946,
+  10.599,
 };
 
 const static size_t len_triggers = sizeof(triggers) / sizeof(*triggers);

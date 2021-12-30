@@ -1,10 +1,6 @@
 #include "lighting_helper.h"
 #include "colors.h"
 
-#define LEDS_T CRGBArray<NUM_LEDS>
-
-template <typename Color>
-void fill(LEDS_T leds, LedTarget target, Color color);
 
 void handle_action(LEDS_T leds, Action a)
 {
@@ -15,12 +11,12 @@ void handle_action(LEDS_T leds, Action a)
         case FN_SET_RGB:
             P(a.rgbColor.r); P(' '); P(a.rgbColor.g); P(' '); P(a.rgbColor.b);
             Pln();
-            fill<CRGB>(leds, a.target, a.rgbColor);
+            light_fill<CRGB>(leds, a.target, a.rgbColor);
             break;
         case FN_SET_HSV:
             P(a.hsvColor.h); P(' '); P(a.hsvColor.s); P(' '); P(a.hsvColor.v);
             Pln();
-            fill<CHSV>(leds, a.target, a.hsvColor);
+            light_fill<CHSV>(leds, a.target, a.hsvColor);
             break;
         case FN_SET_BRIGHTNESS:
             Pln(a.value);
@@ -34,12 +30,6 @@ void handle_action(LEDS_T leds, Action a)
 
     FastLED.show();
 }
-
-void fillWhite(LEDS_T leds, uint8_t val)
-{
-    leds.fill_solid(CRGB(val, val, val));
-}
-
 
 CHSV Hue(HSVHue h) { return CHSV(h, 255, 255); }
 
@@ -77,7 +67,7 @@ IncParams get_inc_params(LedTarget target)
 }
 
 template <typename Color>
-void fill(LEDS_T leds, LedTarget target, Color color)
+void light_fill(LEDS_T leds, LedTarget target, Color color)
 {
     if (target == TARGET_ALL)
     {
@@ -92,6 +82,9 @@ void fill(LEDS_T leds, LedTarget target, Color color)
         i += params.inc;
     }
 }
+
+// template void light_fill<CRGB>(LEDS_T leds, LedTarget target, CRGB color);
+// template void light_fill<CHSV>(LEDS_T leds, LedTarget target, CHSV color);
 
 
 // log helpers
