@@ -59,6 +59,14 @@ static unsigned long triggers_micros[len_triggers];
 
 void play();
 
+void on_reed_triggered()
+{
+    digitalWrite(PIN_LED_INDICATOR, HIGH);
+    delay(PLAY_START_DELAY_MILLIS);
+    play();
+    digitalWrite(PIN_LED_INDICATOR, LOW);
+}
+
 void setup()
 {
   Serial.begin(9600);
@@ -66,6 +74,7 @@ void setup()
   wire_setup(true, I2C_ADDR_SLAVE);
 
   pinMode(PIN_LED_INDICATOR, OUTPUT);
+  digitalWrite(PIN_LED_INDICATOR, LOW);
   pinMode(PIN_REED, INPUT_PULLUP);
   reedDebounce.attach(PIN_REED);
   
@@ -119,10 +128,9 @@ void loop()
 {
   reedDebounce.update();
   
-  digitalWrite(PIN_LED_INDICATOR, !reedDebounce.read());
+  // digitalWrite(PIN_LED_INDICATOR, !reedDebounce.read());
 
   if (reedDebounce.fell()) {
-    delay(PLAY_START_DELAY_MILLIS);
-    play();
+    on_reed_triggered();
   }
 }
