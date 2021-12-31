@@ -1,3 +1,6 @@
+#ifndef LIGHTING_HELPER_H
+#define LIGHTING_HELPER_H
+
 #include <Arduino.h>
 #include <FastLED.h>
 #include "common.h"
@@ -15,6 +18,7 @@ enum LedTarget : uint8_t
 {
     TARGET_ALL,
     TARGET_EVEN,
+    
     TARGET_ODD,   
 };
 
@@ -47,3 +51,5 @@ CHSV Hue(HSVHue h);
 
 const char *GetFn(LightFn fn);
 const char *GetTarget(LedTarget target);
+
+#endif

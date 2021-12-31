@@ -9,6 +9,7 @@
 #include "sound/anthem_22050hz_8bit.h"
 #include "Bounce2.h"
 #include "utils/utils.h"
+#include "master/triggers.h"
 
 #define Pf(x, ...) Serial.printf(x, __VA_ARGS__);
 
@@ -39,20 +40,6 @@ int32_t err_sampleget = 0;
 int32_t err_dacWrite = 0;
 int32_t err_errs = 0;
 
-
-// TODO - light triggers
-const static double triggers[] = {
-  0,
-  1.333,
-  3.711,
-  4.114,
-  5.820,
-  7.405,
-  8.083,
-  8.685,
-  8.946,
-  10.599,
-};
 
 const static size_t len_triggers = sizeof(triggers) / sizeof(*triggers);
 static unsigned long triggers_micros[len_triggers];
