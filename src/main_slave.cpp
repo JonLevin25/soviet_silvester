@@ -2,7 +2,6 @@
 #include <Wire.h>
 #include "common.h"
 #include "utils/utils.h"
-#include "Adafruit_I2CRegister.h"
 #include "utils/i2c_helper.h"
 #include "slave/lighting.h"
 
