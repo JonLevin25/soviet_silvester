@@ -6,4 +6,7 @@
 TProgmemRGBGradientPalette_byte init_bg_gp();
 CRGBPalette16 init_bg_palette();
 
+TProgmemRGBGradientPalette_byte russian_gp();
+CRGBPalette16 russian_palette();
+
 #endif
