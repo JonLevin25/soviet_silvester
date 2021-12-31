@@ -9,4 +9,13 @@ const static double triggers[] = {
   8.685,
   8.800,
   10.6,
+
+  // Da-da-daaa
+  11.450,
+  11.811,
+  12.265
 };
+
+
+// #define OVERRIDE_START_SECS 10
+// #define OVERRIDE_END_SECS 15

@@ -42,7 +42,7 @@ int32_t err_errs = 0;
 
 
 const static size_t len_triggers = sizeof(triggers) / sizeof(*triggers);
-static unsigned long triggers_micros[len_triggers];
+static unsigned int triggers_samples[len_triggers];
 
 void play();
 
@@ -71,8 +71,8 @@ void setup()
   // Convert triggers to micros
   for (size_t i = 0; i < len_triggers; i++)
   {
-    triggers_micros[i] = (unsigned long) round(triggers[i] * 1E6);
-    Pf("%f -> %lu\n", triggers[i], triggers_micros[i]);
+    triggers_samples[i] = (unsigned int) round(triggers[i] * SAMPLE_FREQ);
+    Pf("%f -> %u\n", triggers[i], triggers_samples[i]);
   }
 
   // TODO: REMOVE! (Test)
@@ -85,24 +85,45 @@ void play()
   Serial.printf("Delay micros: %u\n", SAMPLE_DELAY_MICROS);
   Serial.println("===== BEGIN SOUND TEST =====");
 
-  uint16_t trig_idx = 0;
-  
   uint32_t start_micros = micros();
-  for (size_t i = 0; i < WAV_DATA_LEN; i++)
+
+  uint16_t trig_idx = 0;
+
+  #ifdef OVERRIDE_START_SECS 
+  uint32_t offset_samples = round(OVERRIDE_START_SECS * SAMPLE_FREQ);
+  uint32_t offset_micros = OVERRIDE_START_SECS * 1E6;
+
+  // trigger index correction
+  for (size_t i = 0; i < len_triggers; i++) {
+    if (triggers[i] >= OVERRIDE_START_SECS)
+      trig_idx = i-1;
+  }
+
+  #else
+  uint32_t offset_samples = 0;
+  uint32_t offset_micros = 0;
+  #endif
+
+  #ifdef OVERRIDE_END_SECS
+  unsigned int samples_len = round(OVERRIDE_END_SECS * SAMPLE_FREQ);
+  #else
+  unsigned int samples_len = WAV_DATA_LEN;
+  #endif
+
+  for (size_t sample_idx = offset_samples; sample_idx < samples_len; sample_idx++)
   {
-    uint8_t sample = WAV_DATA[i];
+    uint8_t sample = WAV_DATA[sample_idx];
     dacWrite(PIN_DAC, sample);
 
     // if passed a trigger time - send it via i2c.
-    auto m1 = micros();
-    if (trig_idx < len_triggers && (m1 - start_micros) >= triggers_micros[trig_idx]) {
+    if (trig_idx < len_triggers && sample_idx >= triggers_samples[trig_idx]) {
       wire_sendMsg(trig_idx, I2C_ADDR_SLAVE);
       trig_idx++;
     }
 
     // instead of delaying a constant amount,
     // calculate it relative to how far behind we are
-    uint32_t next_sample_time = start_micros + SAMPLE_DELAY_MICROS * (i+1);
+    uint32_t next_sample_time = start_micros + SAMPLE_DELAY_MICROS * (sample_idx+1) - offset_micros;
     auto cur_micros = micros();
     
     if (cur_micros >= next_sample_time) continue;
