@@ -10,15 +10,61 @@
 // #define LIGHT_TEST
 
 CRGBArray<NUM_LEDS> leds;
+LightFn lastFn = NONE;
 
 
 static const size_t len_actions = sizeof(actions) / sizeof(Action);
 void loop_fade_brightness();
+double get_trigger_t();
 
 unsigned long trig_hit_millis;
 uint16_t last_trig = 0;
 
-double get_trigger_t();
+uint16_t fade_brightness_start_val;
+uint16_t fade_brightness_target_val;
+
+void handle_action(LEDS_T leds, Action a)
+{
+    P("Action: "); P(GetFn(a.fn)); P(", Target: "); P(a.target); P(", Value: ");
+    lastFn = a.fn;
+
+    switch (a.fn)
+    {
+        case FN_SET_RGB:
+            P(a.rgbColor.r); P(' '); P(a.rgbColor.g); P(' '); P(a.rgbColor.b);
+            Pln();
+            light_fill<CRGB>(leds, a.target, a.rgbColor);
+            break;
+        case FN_SET_HSV:
+            P(a.hsvColor.h); P(' '); P(a.hsvColor.s); P(' '); P(a.hsvColor.v);
+            Pln();
+            light_fill<CHSV>(leds, a.target, a.hsvColor);
+            break;
+        case FN_SET_BRIGHTNESS:
+            Pln(a.value);
+            FastLED.setBrightness(a.value);
+            break;
+        case FN_SET_BRIGHTNESS_FADE:
+            fade_brightness_start_val = FastLED.getBrightness();
+            fade_brightness_target_val = a.value;
+            P(fade_brightness_start_val); P(" -> " ); P(fade_brightness_target_val);
+            Pln();
+            break;
+        default:
+            P("Unknown function! ("); P(a.fn); P(')');
+            Pln();
+            return;
+    }
+
+    FastLED.show();
+}
+
+void handle_action(uint16_t idx)
+{
+    Action action = actions[idx];
+    handle_action(leds, action);
+}
+
 
 void test_setup()
 {
@@ -30,7 +76,7 @@ void test_loop()
     static uint16_t i = 0;
     if (i < len_actions) {
         EVERY_N_SECONDS(3) {
-            handle_action(leds, actions[i++]);
+            handle_action(i++);
         }
     }
 }
@@ -56,8 +102,9 @@ void on_light_trigger(uint16_t idx)
         return;
     }
 
-    handle_action(leds, actions[idx]);
+    handle_action(idx);
 }
+
 
 void setup_lighting()
 {
@@ -73,6 +120,16 @@ void loop_lighting()
     #ifdef LIGHT_TEST
     test_loop();
     #endif
+
+    switch (lastFn)
+    {
+        case FN_SET_BRIGHTNESS_FADE:
+        loop_fade_brightness(fade_brightness_start_val, fade_brightness_target_val, get_trigger_t());
+        break;
+        
+        default:
+        break;
+    }
 }
 
 void reset_lighting()

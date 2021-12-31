@@ -2,35 +2,6 @@
 #include "colors.h"
 
 
-void handle_action(LEDS_T leds, Action a)
-{
-    P("Action: "); P(GetFn(a.fn)); P(", Target: "); P(a.target); P(", Value: ");
-    
-    switch (a.fn)
-    {
-        case FN_SET_RGB:
-            P(a.rgbColor.r); P(' '); P(a.rgbColor.g); P(' '); P(a.rgbColor.b);
-            Pln();
-            light_fill<CRGB>(leds, a.target, a.rgbColor);
-            break;
-        case FN_SET_HSV:
-            P(a.hsvColor.h); P(' '); P(a.hsvColor.s); P(' '); P(a.hsvColor.v);
-            Pln();
-            light_fill<CHSV>(leds, a.target, a.hsvColor);
-            break;
-        case FN_SET_BRIGHTNESS:
-            Pln(a.value);
-            FastLED.setBrightness(a.value);
-            break;
-        default:
-            P("Unknown function! ("); P(a.fn);
-            Pln();
-            return;
-    }
-
-    FastLED.show();
-}
-
 CHSV Hue(HSVHue h) { return CHSV(h, 255, 255); }
 
 void examples(LEDS_T leds)
@@ -50,6 +21,21 @@ void examples(LEDS_T leds)
     FastLED.setCorrection(TypicalPixelString);
 
     FastLED.show();
+}
+
+void loop_fade_brightness(uint8_t start, uint8_t target, double t)
+{
+    uint8_t val = lerp8(start, target, t);
+    // P("Loop brightness: "); Pln(val);
+    FastLED.setBrightness(val);
+    FastLED.show();
+}
+
+uint8_t lerp8(uint8_t start, uint8_t end, double t)
+{
+    int16_t iStart = start;
+    int16_t iEnd = end;
+    return start + t * (iEnd - iStart);
 }
 
 struct IncParams {uint8_t idx_start; uint8_t inc; };
@@ -83,8 +69,8 @@ void light_fill(LEDS_T leds, LedTarget target, Color color)
     }
 }
 
-// template void light_fill<CRGB>(LEDS_T leds, LedTarget target, CRGB color);
-// template void light_fill<CHSV>(LEDS_T leds, LedTarget target, CHSV color);
+template void light_fill<CRGB>(LEDS_T leds, LedTarget target, CRGB color);
+template void light_fill<CHSV>(LEDS_T leds, LedTarget target, CHSV color);
 
 
 // log helpers
@@ -95,6 +81,8 @@ const char *GetFn(LightFn fn)
         case FN_SET_HSV: return "FN_SET_HSV";
         case FN_SET_RGB: return "FN_SET_RGB";
         case FN_SET_BRIGHTNESS: return "FN_SET_BRIGHTNESS";
+        case FN_SET_BRIGHTNESS_FADE: return "FN_SET_BRIGHTNESS_FADE";
+        case NONE: return "NONE";
         default: return "FN_UNKNOWN";
     }
 }

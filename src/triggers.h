@@ -40,5 +40,5 @@ const static double triggers[] = {
 const static size_t len_triggers = sizeof(triggers) / sizeof(*triggers);
 
 
-#define OVERRIDE_START_SECS 9
+// #define OVERRIDE_START_SECS 9
 // #define OVERRIDE_END_SECS 17

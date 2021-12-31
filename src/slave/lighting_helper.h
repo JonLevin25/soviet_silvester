@@ -9,10 +9,12 @@
 
 enum LightFn : uint8_t
 {
+    NONE,
     FN_SET_HSV,
     FN_SET_RGB,
     FN_SET_HTML,
     FN_SET_BRIGHTNESS,
+    FN_SET_BRIGHTNESS_FADE,
 };
 
 enum LedTarget : uint8_t
@@ -53,5 +55,8 @@ CHSV Hue(HSVHue h);
 
 const char *GetFn(LightFn fn);
 const char *GetTarget(LedTarget target);
+
+void loop_fade_brightness(uint8_t start, uint8_t target, double t);
+uint8_t lerp8(uint8_t start, uint8_t end, double t);
 
 #endif
