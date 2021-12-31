@@ -32,9 +32,9 @@ Action actions[] = {
     AHSV(TARGET_ALL, HUE_YELLOW),            // 15
     ARGB(TARGET_EVEN, CRGB::Red),          // 17
     AHSV(TARGET_EVEN, HUE_RED),               // 16
-    AHSV(TARGET_ALL, HUE_BLUE),               // 18
-    AHSV(TARGET_EVEN, HUE_BLUE),               // 19
+    AHSV(TARGET_ODD, HUE_BLUE),               // 18
+    ARGB(TARGET_ODD, CRGB::WhiteSmoke),               // 19
     AHSV(TARGET_ODD, HUE_RED),               // 20
-    AHSV(TARGET_ALL, HUE_RED),               // 21
+    AHSV(TARGET_ODD, HUE_YELLOW),               // 21
     AHSV(TARGET_ALL, HUE_YELLOW),                // 22
 };
