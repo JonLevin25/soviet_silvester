@@ -13,7 +13,7 @@
 #define Pf(x, ...) Serial.printf(x, __VA_ARGS__);
 
 #define PIN_DAC 25
-#define PIN_LED_INDICATOR 32
+#define PIN_LED_INDICATOR 14
 #define PIN_REED 4
 
 #define PLAY_START_DELAY_MILLIS 1300
@@ -62,8 +62,10 @@ void play();
 void on_reed_triggered()
 {
     digitalWrite(PIN_LED_INDICATOR, HIGH);
+
     delay(PLAY_START_DELAY_MILLIS);
     play();
+    
     digitalWrite(PIN_LED_INDICATOR, LOW);
 }
 
@@ -74,8 +76,9 @@ void setup()
   wire_setup(true, I2C_ADDR_SLAVE);
 
   pinMode(PIN_LED_INDICATOR, OUTPUT);
-  digitalWrite(PIN_LED_INDICATOR, LOW);
   pinMode(PIN_REED, INPUT_PULLUP);
+  digitalWrite(PIN_LED_INDICATOR, LOW);
+  
   reedDebounce.attach(PIN_REED);
   
   // Convert triggers to micros

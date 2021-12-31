@@ -2,6 +2,8 @@
 #include <FastLED.h>
 #include "common.h"
 
+#define LEDS_T CRGBArray<NUM_LEDS>
+
 enum LightFn : uint8_t
 {
     FN_SET_HSV,
@@ -34,8 +36,13 @@ struct Action
     };
 };
 
-void handle_action(CRGBArray<NUM_LEDS> leds, Action a);
-void fillWhite(CRGBArray<NUM_LEDS> leds, uint8_t val);
+template <typename Color>
+void light_fill(LEDS_T leds, LedTarget target, Color color);
+
+
+
+void handle_action(LEDS_T leds, Action a);
+void fillWhite(LEDS_T leds, uint8_t val);
 CHSV Hue(HSVHue h);
 
 const char *GetFn(LightFn fn);
