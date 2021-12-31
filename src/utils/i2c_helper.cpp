@@ -23,7 +23,7 @@ void wire_sendMsg(uint16_t value, int slave_addr)
   
   const uint8_t *bytes = (const uint8_t *) &value;
 
-  P("Send msg"); P(value);
+  P("Send msg: "); P(value);
   Pln();
   
   Wire.write(bytes, MSG_SIZE);

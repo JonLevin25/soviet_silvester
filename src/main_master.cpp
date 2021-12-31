@@ -86,22 +86,22 @@ void play()
   Serial.println("===== BEGIN SOUND TEST =====");
 
   uint32_t start_micros = micros();
-
   uint16_t trig_idx = 0;
 
   #ifdef OVERRIDE_START_SECS 
   uint32_t offset_samples = round(OVERRIDE_START_SECS * SAMPLE_FREQ);
-  uint32_t offset_micros = OVERRIDE_START_SECS * 1E6;
 
   // trigger index correction
   for (size_t i = 0; i < len_triggers; i++) {
-    if (triggers[i] >= OVERRIDE_START_SECS)
-      trig_idx = i-1;
+    if (triggers_samples[i] >= offset_samples)
+    {
+      trig_idx = i==0 ? 0 : i-1;
+      break;
+    }
   }
 
   #else
   uint32_t offset_samples = 0;
-  uint32_t offset_micros = 0;
   #endif
 
   #ifdef OVERRIDE_END_SECS
@@ -123,7 +123,7 @@ void play()
 
     // instead of delaying a constant amount,
     // calculate it relative to how far behind we are
-    uint32_t next_sample_time = start_micros + SAMPLE_DELAY_MICROS * (sample_idx+1) - offset_micros;
+    uint32_t next_sample_time = start_micros + SAMPLE_DELAY_MICROS * (sample_idx-offset_samples+1);
     auto cur_micros = micros();
     
     if (cur_micros >= next_sample_time) continue;
