@@ -9,7 +9,7 @@
 #include "sound/anthem_22050hz_8bit.h"
 #include "Bounce2.h"
 #include "utils/utils.h"
-#include "master/triggers.h"
+#include "triggers.h"
 
 #define Pf(x, ...) Serial.printf(x, __VA_ARGS__);
 
@@ -41,7 +41,6 @@ int32_t err_dacWrite = 0;
 int32_t err_errs = 0;
 
 
-const static size_t len_triggers = sizeof(triggers) / sizeof(*triggers);
 static unsigned int triggers_samples[len_triggers];
 
 void play();
