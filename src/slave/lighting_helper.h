@@ -11,6 +11,7 @@ enum LightFn : uint8_t
 {
     FN_SET_HSV,
     FN_SET_RGB,
+    FN_SET_HTML,
     FN_SET_BRIGHTNESS,
 };
 
@@ -27,6 +28,7 @@ struct Action
     Action(LightFn fn, LedTarget target, uint8_t val) : fn(fn), target(target), value(val) {}
     Action(LightFn fn, LedTarget target, CHSV hsv) : fn(fn), target(target), hsvColor(hsv) {}
     Action(LightFn fn, LedTarget target, CRGB rgb) : fn(fn), target(target), rgbColor(rgb) {}
+    Action(LightFn fn, LedTarget target, CRGB::HTMLColorCode htmlColor) : fn(fn), target(target), rgbColor((CRGB)htmlColor) {}
     // Action(LightFn fn, LedTarget target, TProgmemRGBGradientPalette_byte palette) : fn(fn), target(target), palette(palette) {}
 
     LightFn fn;
