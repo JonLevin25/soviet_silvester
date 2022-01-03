@@ -11,7 +11,7 @@ While idle, the lights are a nice white/green.
 * SPST Reed switch
 * Magnets
 * Addressable LED (RGB) Strip
-* Logic level shifter (for I2C between Arduino/ESP)
+* I2C Logic level shifter (Arduino/ESP communication)
 * [SC8002B Amp+Speaker module](https://www.keyestudio.com/products/keyestudio-8002b-power-amplifier-module-speaker-buzzer-for-arduino-industrial-grade)
 
 ------
@@ -22,7 +22,9 @@ While idle, the lights are a nice white/green.
 * I2C between Esp/Arduino
 * Reed switch hot-glued inside toilet tank
 * Magnets glued on each arm of toilet handles (inside tank). Adjust sensitivity to recognize flushes
-* PlatformIO
+* Platformio
+    * `Platoformio.ini` - change `upload_port` and `monitor_port` on both environments to whatever you want, or delete for autodetect.
+    * Switch environments to build for each MCU.
 
 ## Running
 Not originally intended to be public, so code is a bit messy.

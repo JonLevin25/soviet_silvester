@@ -12,9 +12,7 @@ enum LightFn : uint8_t
     NONE,
     FN_SET_HSV,
     FN_SET_RGB,
-    FN_SET_HTML,
     FN_SET_BRIGHTNESS,
-    FN_SET_BRIGHTNESS_FADE,
 };
 
 enum LedTarget : uint8_t
@@ -40,14 +38,12 @@ struct Action
         CHSV hsvColor;
         uint8_t value;
         CRGB rgbColor;
-        TProgmemRGBGradientPalette_byte palette;
+        // TProgmemRGBGradientPalette_byte palette;
     };
 };
 
 template <typename Color>
 void light_fill(LEDS_T leds, LedTarget target, Color color);
-
-
 
 void handle_action(LEDS_T leds, Action a);
 void fillWhite(LEDS_T leds, uint8_t val);

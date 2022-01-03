@@ -4,25 +4,6 @@
 
 CHSV Hue(HSVHue h) { return CHSV(h, 255, 255); }
 
-void examples(LEDS_T leds)
-{
-    int i = 4;
-    EVERY_N_MILLISECONDS(15) {
-        // do something
-        
-    }
-
-    leds[i] = CRGB::Red;
-    leds[i] = CHSV(160, random8(), random8(100, 255));
-    
-    // colors and corrections
-    FastLED.setTemperature(Candle);
-    FastLED.setCorrection(TypicalLEDStrip);
-    FastLED.setCorrection(TypicalPixelString);
-
-    FastLED.show();
-}
-
 void loop_fade_brightness(uint8_t start, uint8_t target, double t)
 {
     uint8_t val = lerp8(start, target, t);
@@ -81,7 +62,6 @@ const char *GetFn(LightFn fn)
         case FN_SET_HSV: return "FN_SET_HSV";
         case FN_SET_RGB: return "FN_SET_RGB";
         case FN_SET_BRIGHTNESS: return "FN_SET_BRIGHTNESS";
-        case FN_SET_BRIGHTNESS_FADE: return "FN_SET_BRIGHTNESS_FADE";
         case NONE: return "NONE";
         default: return "FN_UNKNOWN";
     }

@@ -12,16 +12,14 @@
 CRGBArray<NUM_LEDS> leds;
 LightFn lastFn = NONE;
 
-
 static const size_t len_actions = sizeof(actions) / sizeof(Action);
-void loop_fade_brightness();
 double get_trigger_t();
 
 unsigned long trig_hit_millis;
 uint16_t last_trig = 0;
 
-uint16_t fade_brightness_start_val;
-uint16_t fade_brightness_target_val;
+void test_setup();
+void test_loop();
 
 void handle_action(LEDS_T leds, Action a)
 {
@@ -44,12 +42,6 @@ void handle_action(LEDS_T leds, Action a)
             Pln(a.value);
             FastLED.setBrightness(a.value);
             break;
-        case FN_SET_BRIGHTNESS_FADE:
-            fade_brightness_start_val = FastLED.getBrightness();
-            fade_brightness_target_val = a.value;
-            P(fade_brightness_start_val); P(" -> " ); P(fade_brightness_target_val);
-            Pln();
-            break;
         default:
             P("Unknown function! ("); P(a.fn); P(')');
             Pln();
@@ -63,22 +55,6 @@ void handle_action(uint16_t idx)
 {
     Action action = actions[idx];
     handle_action(leds, action);
-}
-
-
-void test_setup()
-{
-    reset_lighting();
-}
-
-void test_loop()
-{
-    static uint16_t i = 0;
-    if (i < len_actions) {
-        EVERY_N_SECONDS(3) {
-            handle_action(i++);
-        }
-    }
 }
 
 void on_light_trigger(uint16_t idx)
@@ -120,20 +96,11 @@ void loop_lighting()
     #ifdef LIGHT_TEST
     test_loop();
     #endif
-
-    switch (lastFn)
-    {
-        case FN_SET_BRIGHTNESS_FADE:
-        loop_fade_brightness(fade_brightness_start_val, fade_brightness_target_val, get_trigger_t());
-        break;
-        
-        default:
-        break;
-    }
 }
 
 void reset_lighting()
-{    
+{   
+    // set idle colors, before and after animations
     fill_palette(leds, NUM_LEDS, 0, 2, init_bg_palette(), 127, LINEARBLEND);
     light_fill<CRGB>(leds, TARGET_EVEN, CRGB::Green);
     FastLED.show();
@@ -149,4 +116,20 @@ double get_trigger_t()
     double final = millis_since_hit / trig_delta_millis;
 
     return final;
+}
+
+void test_setup()
+{
+    reset_lighting();
+}
+
+void test_loop()
+{
+    // test iterate over actions (without i2c triggers)
+    static uint16_t i = 0;
+    if (i < len_actions) {
+        EVERY_N_SECONDS(3) {
+            handle_action(i++);
+        }
+    }
 }

@@ -10,7 +10,7 @@ void onData(uint16_t value);
 void setup()
 {
     Serial.begin(9600);
-    Serial.println("main_avr.cpp");
+    Serial.println("main_slave.cpp");
     
     pinMode(SDA, INPUT_PULLUP);
     pinMode(SCL, INPUT_PULLUP);
