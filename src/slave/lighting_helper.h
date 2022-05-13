@@ -45,7 +45,6 @@ struct Action
 template <typename Color>
 void light_fill(LEDS_T leds, LedTarget target, Color color);
 
-void handle_action(LEDS_T leds, Action a);
 void fillWhite(LEDS_T leds, uint8_t val);
 CHSV Hue(HSVHue h);
 
